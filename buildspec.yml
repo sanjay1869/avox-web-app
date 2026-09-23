@@ -1,0 +1,47 @@
+version: 0.2
+
+env:
+  variables:
+    APP_NAME: "avox-web-app"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - echo "Install phase - Node.js $(node --version), npm $(npm --version)"
+  pre_build:
+    commands:
+      - echo "Pre-build phase - syntax check of all source files"
+      - node --check server.js
+      - for f in lib/*.js; do node --check "$f"; done
+  build:
+    commands:
+      - echo "Build phase - running unit tests for $APP_NAME"
+      - npm test
+      - |
+        printf '{"build":"%s","commit":"%s","builtAt":"%s"}\n' \
+          "$CODEBUILD_BUILD_NUMBER" \
+          "${CODEBUILD_RESOLVED_SOURCE_VERSION:-unknown}" \
+          "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > build-info.json
+      - cat build-info.json
+  post_build:
+    commands:
+      - echo "Post-build phase - build finished on $(date)"
+
+reports:
+  avox-unit-tests:
+    files:
+      - junit.xml
+    base-directory: reports
+    file-format: JUNITXML
+
+artifacts:
+  files:
+    - server.js
+    - package.json
+    - build-info.json
+    - appspec.yml
+    - avox-web-app.service
+    - lib/**/*
+    - scripts/**/*

@@ -1,0 +1,4 @@
+# Force Linux line endings for scripts and YAML (prevents /bin/bash^M errors)
+*.sh   text eol=lf
+*.yml  text eol=lf
+*.service text eol=lf

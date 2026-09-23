@@ -1,0 +1,13 @@
+{
+  "name": "avox-web-app",
+  "version": "1.0.0",
+  "description": "Avox IT Services - Order Pricing web app (CI/CD lab)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "pretest": "node -e \"require('fs').mkdirSync('reports',{recursive:true})\"",
+    "test": "node --test --test-reporter=spec --test-reporter-destination=stdout --test-reporter=junit --test-reporter-destination=reports/junit.xml test/pricing.test.js test/server.test.js"
+  },
+  "author": "Sanjay Sharma - Avox IT Services",
+  "license": "MIT"
+}

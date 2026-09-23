@@ -1,0 +1,5 @@
+node_modules/
+reports/
+build-info.json
+*.zip
+.DS_Store
